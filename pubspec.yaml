@@ -1,4 +1,4 @@
-name: qr_retriver
+name: qr_repository
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -35,7 +35,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   googleapis: ^10.1.0
-  extension_google_sign_in_as_googleapis_auth: ^2.0.9
+  http:
 
 dev_dependencies:
   flutter_test:
@@ -58,9 +58,6 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  assets:
-    - assets/BSCS/
-    - assets/BSInfo.Tech/
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
