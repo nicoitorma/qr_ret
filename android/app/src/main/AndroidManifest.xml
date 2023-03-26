@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.qr_retriver">
    <application
-        android:label="qr_retriver"
+        android:label="QR Repository"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
