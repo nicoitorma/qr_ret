@@ -72073,7 +72073,7 @@ switch(0){case 0:s=A.tY(new A.KB(B.yJ,p.Q,o),o,o)
 r=t.VS
 q=t.p
 r=A.ud(A.a([new A.cF(B.bd,A.ajN(A.a([A.amL(new A.cF(B.Aa,A.ak1(p.as,B.B7,A.a([new A.mL(A.bW("[BSCITbscit]",!0),!0,"")],r),new A.adv()),o)),A.amL(new A.cF(B.Am,A.ak1(p.at,B.B8,A.a([new A.mL(A.bW("[1234]",!0),!0,"")],r),new A.adw()),o))],q),B.by,B.tA,B.cn),o),new A.cF(B.bd,A.ak1(p.ax,B.B6,A.a([new A.mL(A.bW("[0-9-]",!0),!0,"")],r),new A.adx()),o)],q),B.by,B.bX,B.eB)
-return A.qM(B.cF,A.a([s,A.ayM(A.tY(A.ud(A.a([B.wa,new A.v5(r,B.lW,p.d),B.wa,new A.Fr(new A.ady(p),o,o,o,A.amH(o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,B.KF,o),B.y,o,!1,o,B.My,o)],q),B.by,B.bX,B.eB),o,o))],q),B.a7,B.cA)}},
+return A.qM(B.cF,A.a([s,A.ayM(A.tY(A.ud(A.a([B.wa,new A.v5(r,B.lW,p.d),B.wa,new A.Fr(new A.ady(p),o,o,o,A.amH(o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,B.KF,o),B.y,o,!1,o,B.Mz,o)],q),B.by,B.bX,B.eB),o,o))],q),B.a7,B.cA)}},
 L(a){var s=null,r=A.an2("assets/csc.png",s,s)
 this.a.toString
 r=A.ajN(A.a([new A.Dv(r,s),B.I0,A.lI("CICT QR Repository",s,s,s,s,s,s)],t.p),B.by,B.tA,B.eB)
@@ -72085,7 +72085,7 @@ A.adA.prototype={
 $0(){this.a.Q=!1},
 $S:0}
 A.adB.prototype={
-$1(a){return A.alV(A.ud(A.a([A.an2("assets/error.png",100,100),B.Mz],t.p),B.by,B.bX,B.cn),B.MA)},
+$1(a){return A.alV(A.ud(A.a([A.an2("assets/error.png",100,100),B.Mx],t.p),B.by,B.bX,B.cn),B.MA)},
 $S:153}
 A.adD.prototype={
 $1(a){return A.alV(new A.pv(this.a.ri(this.b,"AIzaSyDpf26T7l_0vgNBV5q7sJx4VV7_ONSwmFY"),new A.adC(),null,t.jz),null)},
@@ -77242,8 +77242,8 @@ B.I_=new A.L(77.37,37.9)
 B.w9=new A.L(1/0,1/0)
 B.a9=new A.jU(0,0,null,null)
 B.I0=new A.jU(10,null,null,null)
-B.Mx=new A.k0("Please wait...",null,null,null,null,null,null,null,null)
-B.yG=new A.tX(B.V,null,null,B.Mx,null)
+B.My=new A.k0("Please wait...",null,null,null,null,null,null,null,null)
+B.yG=new A.tX(B.V,null,null,B.My,null)
 B.I1=new A.jU(50,100,B.yG,null)
 B.wa=new A.jU(null,30,null,null)
 B.I2=new A.y_(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -77569,8 +77569,8 @@ B.LJ=new A.u(!0,B.k,null,"Roboto",null,null,null,null,null,null,null,null,null,n
 B.Lm=new A.u(!0,B.k,null,"Roboto",null,null,null,null,null,null,null,null,null,null,null,null,null,B.e,null,null,null,"whiteMountainView labelSmall",null,null,null,null)
 B.Mw=new A.dU(B.L6,B.Mf,B.LZ,B.JQ,B.LR,B.L_,B.Mj,B.Kg,B.KJ,B.LM,B.JL,B.M0,B.LP,B.LJ,B.Lm)
 B.wu=new A.yA(1,"longestLine")
-B.My=new A.k0("Submit",null,null,null,null,null,null,null,null)
-B.Mz=new A.k0("I'm tired looking but found nothing, please contact \nyour year level representative.",null,null,null,null,null,null,null,null)
+B.Mx=new A.k0("I'm tired looking but found nothing, please contact your year level representative.",null,null,null,null,null,null,null,null)
+B.Mz=new A.k0("Submit",null,null,null,null,null,null,null,null)
 B.MA=new A.k0("Oh no!",null,null,null,null,null,null,null,null)
 B.PG=new A.K9(0,"system")
 B.MB=new A.yD(null)

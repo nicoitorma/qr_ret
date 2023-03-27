@@ -151,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   Image.asset('assets/error.png', width: 100, height: 100),
                   const Text(
-                      "I'm tired looking but found nothing, please contact \nyour year level representative."),
+                      "I'm tired looking but found nothing, please contact your year level representative."),
                 ],
               ),
             )));
