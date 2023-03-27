@@ -35,10 +35,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
   String? idNum;
+  int index = 0;
   String dropdownValue = 'Program';
   String yearlvl = 'Year level';
   String? program, year;
   String apiKey = 'AIzaSyDpf26T7l_0vgNBV5q7sJx4VV7_ONSwmFY';
+  bool isLoading = false;
   TextEditingController text1 = TextEditingController();
   TextEditingController text2 = TextEditingController();
   TextEditingController text3 = TextEditingController();
@@ -59,16 +61,27 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future getFolderContents(String folderId, String apiKey) async {
+    setState(() {
+      isLoading = true;
+    });
+
     final url =
         '$_baseUrl/files?q=trashed=false and mimeType="image/png" and "$folderId" in parents&pageSize=300&key=$apiKey';
-    final response = await http.get(Uri.parse(url));
+    try {
+      final response = await http.get(Uri.parse(url));
 
-    if (response.statusCode == 200) {
-      final result = json.decode(response.body);
-      final files = result['files'] as List<dynamic>;
-      return files;
-    } else {
-      return response.reasonPhrase;
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body);
+        final files = result['files'] as List<dynamic>;
+        setState(() {
+          isLoading = false;
+        });
+        return files;
+      } else {
+        return response.reasonPhrase;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 
@@ -120,6 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       }
       if (!fileFound) {
+        debugPrint('Error, not found');
         showError();
       }
     } catch (e) {
@@ -130,13 +144,18 @@ class _MyHomePageState extends State<MyHomePage> {
   showError() {
     showDialog(
         context: context,
-        builder: ((context) => const AlertDialog(
-              title: Text("Error! "),
-              content: Text("No QR found, please contact system admin."),
+        builder: ((context) => AlertDialog(
+              title: const Text("Oh no!"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset('assets/error.png', width: 100, height: 100),
+                  const Text(
+                      "I'm tired looking but found nothing, please contact \nyour year level representative."),
+                ],
+              ),
             )));
   }
-
-  showHelp() {}
 
   showQR(String img) {
     showDialog(
@@ -147,153 +166,151 @@ class _MyHomePageState extends State<MyHomePage> {
                   builder: (contex, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       return Image.memory(base64Decode(snapshot.data!));
-                    } else {
-                      return const SizedBox(
-                        width: 200,
-                        height: 200,
-                        child: CircularProgressIndicator(),
-                      );
                     }
+                    return const SizedBox(
+                        width: 50,
+                        height: 100,
+                        child: Center(child: Text('Please wait...')));
                   }),
             )));
+  }
+
+  defaultContent() {
+    switch (index) {
+      case 0:
+        return Stack(children: [
+          Center(
+            child: Visibility(
+                visible: isLoading,
+                child: const CircularProgressIndicator(color: Colors.blue)),
+          ),
+          SingleChildScrollView(
+            child: Center(
+              child: Column(children: [
+                const SizedBox(height: 30),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: TextFormField(
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter your Program';
+                                      }
+                                      return null;
+                                    },
+                                    controller: text1,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      hintText:
+                                          'Enter Program (BSCS/BSIT/BSIS)',
+                                      labelText: 'Program',
+                                    ),
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp("[BSCITbscit]")),
+                                    ]),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: TextFormField(
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter your year level';
+                                      }
+                                      return null;
+                                    },
+                                    controller: text2,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      hintText: 'Enter Year level',
+                                      labelText: 'Year level',
+                                    ),
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp("[1234]")),
+                                    ]),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your ID Number';
+                              }
+                              return null;
+                            },
+                            controller: text3,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'Enter ID Number',
+                              labelText: 'ID Number',
+                            ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp("[0-9-]")),
+                            ]),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 30),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      textStyle: const TextStyle(fontSize: 18)),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      program = text1.text.toUpperCase();
+                      year = text2.text;
+                      idNum = text3.text;
+                      getQR();
+                    }
+                  },
+                  child: const Text('Submit'),
+                ),
+              ]),
+            ),
+          )
+        ]);
+      // case 1:
+      //   return Center(
+      //     child: Column(children: const [
+      //       Text('QR not found?'),
+      //       Text(
+      //           'Please message your respective Year level representative regarding your queries. Thank You!'),
+      //     ]),
+      //   );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(widget.title)),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
+        appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              DrawerHeader(
-                decoration: const BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Center(
-                    child: Column(
-                  children: [
-                    CircleAvatar(
-                        radius: 35, child: Image.asset('assets/csc.png')),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'CICT-CSC',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  ],
-                )),
-              ),
-              ListTile(
-                leading: const Icon(
-                  Icons.help,
-                ),
-                title: const Text('Help'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
+              CircleAvatar(child: Image.asset('assets/csc.png')),
+              const SizedBox(width: 10),
+              Text(widget.title),
             ],
           ),
         ),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Column(children: [
-              const SizedBox(height: 30),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: TextFormField(
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter your Program';
-                                    }
-                                    return null;
-                                  },
-                                  controller: text1,
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    hintText: 'Enter Program (BSCS/BSIT/BSIS)',
-                                    labelText: 'Program',
-                                  ),
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp("[BSCITbscit]")),
-                                  ]),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: TextFormField(
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter your year level';
-                                    }
-                                    return null;
-                                  },
-                                  controller: text2,
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    hintText: 'Enter Yearlevel',
-                                    labelText: 'Year level',
-                                  ),
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp("[1234]")),
-                                  ]),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your ID Number';
-                            }
-                            return null;
-                          },
-                          controller: text3,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Enter ID Number',
-                            labelText: 'ID Number',
-                          ),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp("[0-9-]")),
-                          ]),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 30),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 18)),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    program = text1.text.toUpperCase();
-                    year = text2.text;
-                    idNum = text3.text;
-                    getQR();
-                  }
-                },
-                child: const Text('Submit'),
-              ),
-            ]),
-          ),
-        ));
+        body: defaultContent());
   }
 }
