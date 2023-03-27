@@ -136,6 +136,8 @@ class _MyHomePageState extends State<MyHomePage> {
             )));
   }
 
+  showHelp() {}
+
   showQR(String img) {
     showDialog(
         context: context,
@@ -159,107 +161,139 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(children: [
-          const SizedBox(height: 30),
-          Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: TextFormField(
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your Program';
-                                }
-                                return null;
-                              },
-                              controller: text1,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: 'Enter Program (BSCS/BSIT/BSIS)',
-                                labelText: 'Program',
-                              ),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp("[BSCITbscit]")),
-                              ]),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: TextFormField(
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your year level';
-                                }
-                                return null;
-                              },
-                              controller: text2,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: 'Enter Yearlevel',
-                                labelText: 'Year level',
-                              ),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp("[1234]")),
-                              ]),
-                        ),
-                      ),
-                    ],
-                  ),
+        appBar: AppBar(title: Text(widget.title)),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                decoration: const BoxDecoration(
+                  color: Colors.blue,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your ID Number';
-                        }
-                        return null;
-                      },
-                      controller: text3,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter ID Number',
-                        labelText: 'ID Number',
-                      ),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp("[0-9-]")),
-                      ]),
+                child: Center(
+                    child: Column(
+                  children: [
+                    CircleAvatar(
+                        radius: 35, child: Image.asset('assets/csc.png')),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'CICT-CSC',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                  ],
+                )),
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.help,
                 ),
-              ],
-            ),
+                title: const Text('Help'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
           ),
-          const SizedBox(height: 30),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 18)),
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                program = text1.text.toUpperCase();
-                year = text2.text;
-                idNum = text3.text;
-                getQR();
-              }
-            },
-            child: const Text('Submit'),
+        ),
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(children: [
+              const SizedBox(height: 30),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter your Program';
+                                    }
+                                    return null;
+                                  },
+                                  controller: text1,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    hintText: 'Enter Program (BSCS/BSIT/BSIS)',
+                                    labelText: 'Program',
+                                  ),
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp("[BSCITbscit]")),
+                                  ]),
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter your year level';
+                                    }
+                                    return null;
+                                  },
+                                  controller: text2,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    hintText: 'Enter Yearlevel',
+                                    labelText: 'Year level',
+                                  ),
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp("[1234]")),
+                                  ]),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your ID Number';
+                            }
+                            return null;
+                          },
+                          controller: text3,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Enter ID Number',
+                            labelText: 'ID Number',
+                          ),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp("[0-9-]")),
+                          ]),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    textStyle: const TextStyle(fontSize: 18)),
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    program = text1.text.toUpperCase();
+                    year = text2.text;
+                    idNum = text3.text;
+                    getQR();
+                  }
+                },
+                child: const Text('Submit'),
+              ),
+            ]),
           ),
-        ]),
-      ),
-    );
+        ));
   }
 }
