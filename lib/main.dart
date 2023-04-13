@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +40,6 @@ class _MyHomePageState extends State<MyHomePage> {
   String dropdownValue = 'Program';
   String yearlvl = 'Year level';
   String? program, year;
-  String apiKey = 'AIzaSyDpf26T7l_0vgNBV5q7sJx4VV7_ONSwmFY';
   bool isLoading = false;
   TextEditingController text1 = TextEditingController();
   TextEditingController text2 = TextEditingController();
@@ -47,7 +47,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final String _baseUrl = 'https://www.googleapis.com/drive/v3';
 
-  Future<String> getImageUrl(String fileId, String apiKey) async {
+  Future<String> getImageUrl(String fileId) async {
+    await dotenv.load();
+    final apiKey = dotenv.env['API_KEY'];
     final url = '$_baseUrl/files/$fileId?alt=media&key=$apiKey';
     final response = await http.get(Uri.parse(url));
 
@@ -60,7 +62,9 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Future getFolderContents(String folderId, String apiKey) async {
+  Future getFolderContents(String folderId) async {
+    await dotenv.load();
+    final apiKey = dotenv.env['API_KEY'];
     setState(() {
       isLoading = true;
     });
@@ -78,7 +82,6 @@ class _MyHomePageState extends State<MyHomePage> {
         });
         return files;
       } else if (response.statusCode == 404) {
-        print('not found');
         setState(() {
           isLoading = false;
         });
@@ -125,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     /// Getting the contents of the folder and checking if the file is there.
     try {
-      final files = await getFolderContents(driveId, apiKey);
+      final files = await getFolderContents(driveId);
       bool fileFound = false;
       if (files.isNotEmpty) {
         for (final data in files) {
@@ -166,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
         context: context,
         builder: ((context) => AlertDialog(
               content: FutureBuilder(
-                  future: getImageUrl(img, apiKey),
+                  future: getImageUrl(img),
                   builder: (contex, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       return Image.memory(base64Decode(snapshot.data!));
