@@ -77,7 +77,11 @@ class _MyHomePageState extends State<MyHomePage> {
           isLoading = false;
         });
         return files;
-      } else {
+      } else if (response.statusCode == 404) {
+        print('not found');
+        setState(() {
+          isLoading = false;
+        });
         return response.reasonPhrase;
       }
     } catch (e) {
@@ -105,11 +109,11 @@ class _MyHomePageState extends State<MyHomePage> {
       driveId = '1Kj0CJaNwMi8FP53OIsH7DQHUCSKRXdDO';
     } else if ((program == 'BSCS') && (year == '3')) {
       driveId = '114RDERQlWGjmyHWCCFXaAyBpdOwvMlaY';
-    } else if ((program == 'BSInfo.Tech') && (year == '1')) {
+    } else if ((program == 'BSIT') && (year == '1')) {
       driveId = '1jyVsaSb6maN4Js7tH5YWTyoPc5rM175S';
-    } else if ((program == 'BSInfo.Tech') && (year == '2')) {
+    } else if ((program == 'BSIT') && (year == '2')) {
       driveId = '13_4uD5RDpUFLTKZ6DHFvi9urao15xM5V';
-    } else if ((program == 'BSInfo.Tech') && (year == '3')) {
+    } else if ((program == 'BSIT') && (year == '3')) {
       driveId = '1TXpfpHGr7ANgiRfqPNX4P1amaR3cflTR';
     } else if ((program == 'BSIS') && (year == '1')) {
       driveId = '1Y1fDKy0lfAbx4SxnS9hR3NzIiNauwIK-';
