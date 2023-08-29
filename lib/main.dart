@@ -48,6 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final String _baseUrl = 'https://www.googleapis.com/drive/v3';
 
   Future<String> getImageUrl(String fileId) async {
+    // palitan mo nalang API KEY
     await dotenv.load();
     final apiKey = dotenv.env['API_KEY'];
     final url = '$_baseUrl/files/$fileId?alt=media&key=$apiKey';
